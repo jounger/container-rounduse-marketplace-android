@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/tracking"
+        android:icon="@drawable/ic_truck"
+        android:title="Tracking" />
+    <item
+        android:id="@+id/packing"
+        android:icon="@drawable/ic_pack"
+        android:title="Pack List" />
+    <item
+        android:id="@+id/user"
+        android:icon="@drawable/ic_user"
+        android:title="User"/>
+
+</menu>
