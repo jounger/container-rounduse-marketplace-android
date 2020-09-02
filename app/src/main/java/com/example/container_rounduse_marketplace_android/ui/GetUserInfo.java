@@ -41,7 +41,7 @@ public class GetUserInfo extends MainActivity {
 
     public static Long geoId;
     Button logout;
-    TextView username, userphone, role;
+    TextView username, username2, userphone, email;
 
 
     @Override
@@ -60,8 +60,9 @@ public class GetUserInfo extends MainActivity {
 
     public void khaiBao(){
         username = findViewById(R.id.textName);
+        username2 = findViewById(R.id.textName2);
         userphone = findViewById(R.id.textPhone);
-        role = findViewById(R.id.textRole);
+        email = findViewById(R.id.textEmail);
         logout = findViewById(R.id.btnLogout);
     }
 
@@ -105,9 +106,9 @@ public class GetUserInfo extends MainActivity {
                 String passUsername = loginResponseCall.getUserInfo().getUsername();
                 String passPhone = loginResponseCall.getUserInfo().getPhone();
                 Integer passID = loginResponseCall.getUserInfo().getId();
-                List<String> passRole = loginResponseCall.getUserInfo().getRoles();
-                userphone.setText("Phone: " + passPhone);
-                role.setText("Role: " + passRole);
+                String passEmail = loginResponseCall.getUserInfo().getEmail();
+                userphone.setText("Số điện thoại: " + passPhone);
+                email.setText("Email: " + passEmail);
 
                 //Call driver to get driver info
                 Call<Driver> userCall = ApiClient.getUserService().getDriverById("Bearer " + token, passID);
@@ -117,7 +118,8 @@ public class GetUserInfo extends MainActivity {
                         Driver driver = response.body();
                         String driverFullName = driver.getFullname();
                         geoId = driver.getLocation().getId();
-                        username.setText("Name: " + driverFullName);
+                        username.setText("" + driverFullName);
+                        username2.setText("" + driverFullName);
                     }
 
                     @Override
