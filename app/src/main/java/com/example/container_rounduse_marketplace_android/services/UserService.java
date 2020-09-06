@@ -1,9 +1,13 @@
 package com.example.container_rounduse_marketplace_android.services;
 
+import android.content.res.Resources;
+
 import com.example.container_rounduse_marketplace_android.models.Driver;
 import com.example.container_rounduse_marketplace_android.models.GeoLocation;
+import com.example.container_rounduse_marketplace_android.models.Inbound;
 import com.example.container_rounduse_marketplace_android.models.LoginRequest;
 import com.example.container_rounduse_marketplace_android.models.LoginResponse;
+import com.example.container_rounduse_marketplace_android.models.ShippingInfo;
 import com.example.container_rounduse_marketplace_android.models.User;
 
 import retrofit2.Call;
@@ -19,11 +23,23 @@ public interface UserService {
     Call<LoginResponse> userLogin(@Body LoginRequest loginRequest);
 
     @GET("auth/user?=")
-    Call<LoginResponse> authToken(@Header("Authorization") Object authHeader);
+    Call<LoginResponse> authToken(@Header("Authorization") String authHeader);
 
     @GET("driver/{id}")
-    Call<Driver> getDriverById(@Header("Authorization") Object authHeader, @Path("id") Integer id);
+    Call<Driver> getDriverById(@Header("Authorization") String authHeader, @Path("id") Integer id);
 
     @PATCH("geolocation/{id}")
-    Call<GeoLocation> editGeolocation(@Header("Authorization") Object authHeader, @Path("id") Long id, @Body GeoLocation geoLocation);
+    Call<GeoLocation> editGeolocation(@Header("Authorization") String authHeader, @Path("id") Long id, @Body GeoLocation geoLocation);
+
+    @GET("shipping-info/active")
+    Call<ShippingInfo> getShippingInfoAreActive(@Header("Authorization") String authHeader);
+
+    @GET("inbound/container/{id}")
+    Call<Inbound> getInboundByContainer(@Header("Authorization") String authHeader, @Path("id") Long id);
+
+
+
+
+
+
 }

@@ -21,16 +21,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/bottom_menu" />
 
-    <ImageView
-        android:id="@+id/imageViewAva"
-        android:layout_width="170dp"
-        android:layout_height="170dp"
-        android:layout_marginTop="80dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ava" />
+
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imageViewAva"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="80dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            android:background="@drawable/vientron"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ava" />
+
 
     <TextView
         android:id="@+id/textName"
@@ -51,9 +55,9 @@
         android:id="@+id/textPhone"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="72dp"
-        android:layout_marginLeft="72dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginStart="68dp"
+        android:layout_marginLeft="68dp"
+        android:layout_marginTop="40dp"
         android:text="Số điện Thoại:"
         android:textColor="#000000"
         android:textSize="18sp"
@@ -77,7 +81,7 @@
         android:id="@+id/btnLogout"
         android:layout_width="102dp"
         android:layout_height="48dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="40dp"
         android:text="Đăng Xuất"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -88,8 +92,9 @@
         android:id="@+id/imageView9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="40dp"
         app:layout_constraintEnd_toStartOf="@+id/textPhone"
+        app:layout_constraintHorizontal_bias="0.545"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textName"
         app:srcCompat="@drawable/ic_baseline_local_phone_24"
@@ -104,7 +109,7 @@
         app:layout_constraintHorizontal_bias="0.545"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textPhone"
-        app:srcCompat="@drawable/ic_baseline_email_24"
+        app:srcCompat="@drawable/ic_baseline_email_new"
         tools:ignore="VectorDrawableCompat" />
 
     <View
@@ -115,7 +120,7 @@
         android:layout_marginLeft="15dp"
         android:layout_marginEnd="15dp"
         android:layout_marginRight="15dp"
-        android:layout_marginBottom="256dp"
+        android:layout_marginBottom="225dp"
         android:background="#61000000"
         app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
         app:layout_constraintEnd_toEndOf="parent"
@@ -127,7 +132,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
-        android:background="#4CAF50"
+        android:background="#00532f"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingStart="10dp"

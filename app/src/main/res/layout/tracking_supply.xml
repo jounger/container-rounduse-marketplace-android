@@ -8,6 +8,19 @@
     tools:context=".ui.TrackingSupply"
     android:background="@color/colorWhite">
 
+    <TextView
+        android:id="@+id/textPackingStation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginLeft="15dp"
+        android:text="Hà Nội Việt Nam"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="#000000"
+        app:layout_constraintStart_toEndOf="@+id/imageView5"
+        app:layout_constraintTop_toBottomOf="@+id/textViewN3" />
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
@@ -27,8 +40,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="104dp"
         android:text="Lịch trình container: "
-        android:textColor="#3C8A3F"
-        android:textSize="24sp"
+        android:textColor="#00532f"
+        android:background="@drawable/duongvien"
+        android:textSize="32sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.084"
@@ -51,11 +65,11 @@
         android:id="@+id/textPackingTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginLeft="15dp"
         android:text="Thời gian đóng: 16:13, 26 thg 8, 2020"
-        android:textSize="12sp"
+        android:textSize="14sp"
+        android:textColor="#000000"
         app:layout_constraintStart_toEndOf="@+id/imageView5"
         app:layout_constraintTop_toBottomOf="@+id/textPackingStation" />
 
@@ -87,36 +101,50 @@
         android:id="@+id/textFreeTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginLeft="4dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginLeft="15dp"
         android:text="Thời gian trả: 16:10, 05 thg 9, 2020"
-        android:textSize="12sp"
+        android:textSize="14sp"
+        android:textColor="#000000"
         app:layout_constraintStart_toEndOf="@+id/imageView4"
         app:layout_constraintTop_toBottomOf="@+id/textReturnStation" />
 
     <TextView
-        android:id="@+id/textPortDelivery"
+        android:id="@+id/textViewN"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginLeft="4dp"
-        android:text="Cảng lấy cont: Cảng Vụ Hàng hải Hải Phòng"
-        android:textSize="14dp"
-        android:textStyle="bold"
+        android:layout_marginStart="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="45dp"
+        android:textColor="#000000"
+        android:text="Cảng lấy cont hàng nhập:"
+        android:textSize="16dp"
         app:layout_constraintStart_toEndOf="@+id/imageView2"
-        app:layout_constraintTop_toTopOf="@+id/imageView2" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewContainer" />
 
     <TextView
-        android:id="@+id/textPackingStation"
+        android:id="@+id/textPortOfDelivery"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="56dp"
-        android:text="Nơi đóng hàng: Hà Nội Hoàn Kiếm Hà Nội Việt Nam"
-        android:textSize="14dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginLeft="15dp"
+        android:text="Cảng Vụ Hàng hải Hải Phòng"
+        android:textSize="16sp"
         android:textStyle="bold"
+        android:textColor="#000000"
+        app:layout_constraintStart_toEndOf="@+id/imageView2"
+        app:layout_constraintTop_toBottomOf="@+id/textViewN" />
+
+    <TextView
+        android:id="@+id/textViewN3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="45dp"
+        android:text="Nơi đóng hàng xuất:"
+        android:textSize="16dp"
+        android:textColor="#000000"
         app:layout_constraintStart_toEndOf="@+id/imageView5"
         app:layout_constraintTop_toBottomOf="@+id/imageView4" />
 
@@ -132,30 +160,44 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView4"
         app:srcCompat="@drawable/packed" />
 
+
     <TextView
         android:id="@+id/textCutOffTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginLeft="15dp"
         android:text="Thời gian Cut-off: 16:13, 27 thg 8, 2020"
-        android:textSize="12sp"
+        android:textSize="14sp"
+        android:textColor="#000000"
         app:layout_constraintStart_toEndOf="@+id/imageView6"
-        app:layout_constraintTop_toBottomOf="@+id/textPortLoading" />
+        app:layout_constraintTop_toBottomOf="@+id/textPortOfLoading" />
+
+    <TextView
+        android:id="@+id/textViewN2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="42dp"
+        android:text="Nơi bốc dỡ hàng nhập:"
+        android:textSize="16dp"
+        android:textColor="#000000"
+        app:layout_constraintStart_toEndOf="@+id/imageView4"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
     <TextView
         android:id="@+id/textReturnStation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginLeft="4dp"
-        android:layout_marginTop="56dp"
-        android:text="Nơi trả hàng: Hà Nội Hoàn Kiếm, Hà Nội Việt Nam"
-        android:textSize="14dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginLeft="15dp"
+        android:text="Hà Nội Hoàn Kiếm "
+        android:textSize="16sp"
+        android:textColor="#000000"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/imageView4"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewN2" />
 
     <View
         android:id="@+id/viewLine2"
@@ -173,14 +215,14 @@
         android:id="@+id/textPickupTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginLeft="4dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginLeft="15dp"
         android:text="Thời gian lấy: 16:10, 24 thg 8, 2020"
-        android:textSize="12sp"
+        android:textSize="14sp"
         android:textStyle="normal"
+        android:textColor="#000000"
         app:layout_constraintStart_toEndOf="@+id/imageView2"
-        app:layout_constraintTop_toBottomOf="@+id/textPortDelivery" />
+        app:layout_constraintTop_toBottomOf="@+id/textPortOfDelivery" />
 
     <View
         android:id="@+id/viewLine"
@@ -195,17 +237,31 @@
         app:layout_constraintVertical_bias="0.48000002" />
 
     <TextView
-        android:id="@+id/textPortLoading"
+        android:id="@+id/textViewN4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="50dp"
-        android:text="Cảng bốc hàng: Cảng Vụ Hàng hải Hải Phòng"
-        android:textSize="14dp"
-        android:textStyle="bold"
+        android:layout_marginStart="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="42dp"
+        android:text="Cảng hạ cont hàng xuất: "
+        android:textSize="16dp"
+        android:textColor="#000000"
         app:layout_constraintStart_toEndOf="@+id/imageView6"
         app:layout_constraintTop_toBottomOf="@+id/imageView5" />
+
+    <TextView
+        android:id="@+id/textPortOfLoading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginLeft="15dp"
+        android:text="Cảng Vụ Hàng hải"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="#000000"
+        app:layout_constraintStart_toEndOf="@+id/imageView6"
+        app:layout_constraintTop_toBottomOf="@+id/textViewN4" />
+
 
     <ImageView
         android:id="@+id/imageView6"
@@ -222,7 +278,7 @@
     <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="?actionBarSize"
-    android:background="#4CAF50"
+    android:background="#00532f"
     android:gravity="center_vertical"
     android:orientation="horizontal"
     android:paddingStart="10dp"
@@ -246,5 +302,7 @@
 
 
 </LinearLayout>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

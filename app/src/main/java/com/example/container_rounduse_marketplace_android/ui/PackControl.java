@@ -23,12 +23,21 @@ import androidx.core.content.ContextCompat;
 
 
 import com.example.container_rounduse_marketplace_android.R;
+import com.example.container_rounduse_marketplace_android.models.ShippingInfo;
+import com.example.container_rounduse_marketplace_android.payload.DefaultResponse;
+import com.example.container_rounduse_marketplace_android.payload.ErrorResponse;
+import com.example.container_rounduse_marketplace_android.until.ApiClient;
+import com.google.android.gms.common.api.Api;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.gson.Gson;
 import com.google.zxing.Result;
 
 import java.util.ArrayList;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static android.Manifest.permission.CAMERA;
 
@@ -48,6 +57,7 @@ public class PackControl extends AppCompatActivity implements ZXingScannerView.R
 
         bottomMenuControl();
         AnhXa();
+        getShippingInfosByDriver();
 
         scannerView = new ZXingScannerView(this);
 
@@ -66,8 +76,25 @@ public class PackControl extends AppCompatActivity implements ZXingScannerView.R
 
             }
         });
+
+
     }
 
+
+    public void getShippingInfosByDriver(){
+        Call<ShippingInfo> shippingInfoCall = ApiClient.getShippingInfoService().getShippingInfosByDriver("Bearer " + MainActivity.token, 1, 20);
+        shippingInfoCall.enqueue(new Callback<ShippingInfo>() {
+            @Override
+            public void onResponse(Call<ShippingInfo> call, Response<ShippingInfo> response) {
+                ShippingInfo shippingInfo = response.body();
+            }
+
+            @Override
+            public void onFailure(Call<ShippingInfo> call, Throwable t) {
+
+            }
+        });
+    }
 
     private boolean checkPermission() {
         return (ContextCompat.checkSelfPermission(PackControl.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED);
@@ -119,6 +146,7 @@ public class PackControl extends AppCompatActivity implements ZXingScannerView.R
                 }
                 scannerView.setResultHandler(this);
                 scannerView.startCamera();
+
             }
         } else {
             requestPermission();
@@ -128,8 +156,9 @@ public class PackControl extends AppCompatActivity implements ZXingScannerView.R
     @Override
     public void onDestroy() {
         super.onDestroy();
-        scannerView.stopCamera();
+//        scannerView.stopCamera();
     }
+
 
     private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
         new AlertDialog.Builder(PackControl.this)
@@ -167,28 +196,46 @@ public class PackControl extends AppCompatActivity implements ZXingScannerView.R
 
     @Override
     public void handleResult(Result result) {
-        final String myResult = result.getText();
-        Log.d("QRCodeScanner", result.getText());
-        Log.d("QRCodeScanner", result.getBarcodeFormat().toString());
-
+        Call<DefaultResponse<ShippingInfo>> defaultResponseShippingInfoCall =
+                ApiClient.getShippingInfoService().editShippingInfoByToken("Bearer " + MainActivity.token ,result.getText());
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Scan Result");
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        defaultResponseShippingInfoCall.enqueue(new Callback<DefaultResponse<ShippingInfo>>() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                scannerView.resumeCameraPreview(PackControl.this);
+            public void onResponse(Call<DefaultResponse<ShippingInfo>> call, Response<DefaultResponse<ShippingInfo>> response) {
+                DefaultResponse<ShippingInfo> defaultResponse = response.body();
+                final String myResult = result.getText();
+                Log.d("QRCodeScanner", result.getText());
+                Log.d("QRCodeScanner", result.getBarcodeFormat().toString());
+
+
+                builder.setTitle("THÔNG BÁO");
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        scannerView.resumeCameraPreview(PackControl.this);
+//                        scannerView.stopCamera();
+                    }
+                });
+
+                if(response.isSuccessful()) {
+                    String thongbao = defaultResponse.getMessage();
+                    builder.setMessage("" + thongbao);
+                    AlertDialog alert1 = builder.create();
+                    alert1.show();
+                }else{
+                    ErrorResponse message = new Gson().fromJson(response.errorBody().charStream(), ErrorResponse.class);
+                    String thongbaofail = message.getMessage();
+                    builder.setMessage("" + thongbaofail);
+                    AlertDialog alert1 = builder.create();
+                    alert1.show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DefaultResponse<ShippingInfo>> call, Throwable t) {
+
             }
         });
-        builder.setNeutralButton("Visit", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(myResult));
-                startActivity(browserIntent);
-            }
-        });
-        builder.setMessage(result.getText());
-        AlertDialog alert1 = builder.create();
-        alert1.show();
     }
 
     private void AnhXa() {

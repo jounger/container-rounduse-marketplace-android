@@ -28,7 +28,17 @@ public class User {
     @SerializedName("address")
     @Expose
     private String address;
+    @SerializedName("profileImagePath")
+    @Expose
+    private String profileImagePath;
 
+    public String getProfileImagePath() {
+        return profileImagePath;
+    }
+
+    public void setProfileImagePath(String profileImagePath) {
+        this.profileImagePath = profileImagePath;
+    }
 
     public Integer getId() {
         return id;
@@ -88,7 +98,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "UserInfo{" +
+        return "User{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
@@ -96,6 +106,7 @@ public class User {
                 ", status='" + status + '\'' +
                 ", roles=" + roles +
                 ", address='" + address + '\'' +
+                ", profileImagePath='" + profileImagePath + '\'' +
                 '}';
     }
 }

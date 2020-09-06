@@ -41,7 +41,7 @@
         android:paddingLeft="10dp"
         android:paddingEnd="10dp"
         app:layout_constraintTop_toTopOf="parent"
-        android:background="#4CAF50">
+        android:background="#00532f">
 
 
         <TextView

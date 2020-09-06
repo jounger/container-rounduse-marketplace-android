@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,14 +20,13 @@ import androidx.core.content.ContextCompat;
 import com.example.container_rounduse_marketplace_android.Constrains.Constrains;
 import com.example.container_rounduse_marketplace_android.R;
 import com.example.container_rounduse_marketplace_android.models.LoginResponse;
-import com.example.container_rounduse_marketplace_android.services.LocationService;
+import com.example.container_rounduse_marketplace_android.controller.DownloadImageTask;
+import com.example.container_rounduse_marketplace_android.controller.LocationService;
 import com.example.container_rounduse_marketplace_android.until.ApiClient;
 import com.example.container_rounduse_marketplace_android.models.Driver;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -42,6 +42,7 @@ public class GetUserInfo extends MainActivity {
     public static Long geoId;
     Button logout;
     TextView username, username2, userphone, email;
+    ImageView ava;
 
 
     @Override
@@ -56,6 +57,7 @@ public class GetUserInfo extends MainActivity {
         getLastKnownLocation();
         bottomMenuControl();
 
+
     }
 
     public void khaiBao(){
@@ -64,11 +66,10 @@ public class GetUserInfo extends MainActivity {
         userphone = findViewById(R.id.textPhone);
         email = findViewById(R.id.textEmail);
         logout = findViewById(R.id.btnLogout);
+        ava = findViewById(R.id.imageViewAva);
     }
 
-    public void logout(){
 
-    }
 
     public void bottomMenuControl(){
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -116,16 +117,30 @@ public class GetUserInfo extends MainActivity {
                     @Override
                     public void onResponse(Call<Driver> call, Response<Driver> response) {
                         Driver driver = response.body();
-                        String driverFullName = driver.getFullname();
-                        geoId = driver.getLocation().getId();
-                        username.setText("" + driverFullName);
-                        username2.setText("" + driverFullName);
+                        try {
+                            String driverFullName = driver.getFullname();
+                            String passAva = loginResponseCall.getUserInfo().getProfileImagePath();
+                            geoId = driver.getLocation().getId();
+                            username.setText("" + driverFullName);
+                            username2.setText("" + driverFullName);
+
+                            new DownloadImageTask((ImageView) findViewById(R.id.imageViewAva)).execute("http://192.168.56.1:8085" + passAva);
+                        }catch (NullPointerException e){
+                            String driverFullName = driver.getFullname();
+                            String passAva = loginResponseCall.getUserInfo().getProfileImagePath();
+                            username.setText("" + driverFullName);
+                            username2.setText("" + driverFullName);
+                            Toast.makeText(GetUserInfo.this, "Vị trí chưa được cập nhật", Toast.LENGTH_SHORT).show();
+                            ava.setImageResource(R.drawable.avadefault);
+
+                        }
+
                     }
 
                     @Override
                     public void onFailure(Call<Driver> call, Throwable t) {
                         Toast.makeText(GetUserInfo.this, "Throwable " + t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-
+                        startActivity(new Intent(GetUserInfo.this, MainActivity.class));
                     }
                 });
             }
@@ -188,4 +203,13 @@ public class GetUserInfo extends MainActivity {
         }
     }
 
+//    private void logOut() {
+//        logout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                token = token.replace(token, "");
+//                startActivity(new Intent(GetUserInfo.this, MainActivity.class));
+//            }
+//        });
+//    }
 }

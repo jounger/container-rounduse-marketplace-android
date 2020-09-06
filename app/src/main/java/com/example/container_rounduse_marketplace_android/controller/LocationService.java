@@ -1,4 +1,4 @@
-package com.example.container_rounduse_marketplace_android.services;
+package com.example.container_rounduse_marketplace_android.controller;
 
 import android.Manifest;
 import android.app.NotificationChannel;
@@ -135,4 +135,6 @@ public class LocationService extends Service {
         }
         return super.onStartCommand(intent, flags, startId);
     }
+
+
 }
