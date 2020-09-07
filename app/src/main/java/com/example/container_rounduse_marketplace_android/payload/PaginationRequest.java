@@ -7,11 +7,9 @@ import java.io.Serializable;
 public class PaginationRequest implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @NotNull
-    private Integer page;
+    private int page;
 
-    @NotNull
-    private Integer limit;
+    private int limit;
 
     private String status;
 
@@ -19,21 +17,19 @@ public class PaginationRequest implements Serializable {
         return serialVersionUID;
     }
 
-    @NotNull
-    public Integer getPage() {
+    public int getPage() {
         return page;
     }
 
-    public void setPage(@NotNull Integer page) {
+    public void setPage(int page) {
         this.page = page;
     }
 
-    @NotNull
-    public Integer getLimit() {
+    public int getLimit() {
         return limit;
     }
 
-    public void setLimit(@NotNull Integer limit) {
+    public void setLimit(int limit) {
         this.limit = limit;
     }
 

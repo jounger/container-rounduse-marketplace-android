@@ -60,7 +60,7 @@ public class GetUserInfo extends MainActivity {
 
     }
 
-    public void khaiBao(){
+    public void khaiBao() {
         username = findViewById(R.id.textName);
         username2 = findViewById(R.id.textName2);
         userphone = findViewById(R.id.textPhone);
@@ -70,14 +70,13 @@ public class GetUserInfo extends MainActivity {
     }
 
 
-
-    public void bottomMenuControl(){
+    public void bottomMenuControl() {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.user);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                switch (menuItem.getItemId()){
+                switch (menuItem.getItemId()) {
                     case R.id.tracking:
                         startActivity(new Intent(getApplicationContext(), TrackingSupply.class));
                         overridePendingTransition(0, 0);
@@ -123,14 +122,17 @@ public class GetUserInfo extends MainActivity {
                             geoId = driver.getLocation().getId();
                             username.setText("" + driverFullName);
                             username2.setText("" + driverFullName);
-
-                            new DownloadImageTask((ImageView) findViewById(R.id.imageViewAva)).execute("http://192.168.56.1:8085" + passAva);
-                        }catch (NullPointerException e){
+                            if (passAva != null){
+                                new DownloadImageTask((ImageView) findViewById(R.id.imageViewAva)).execute("http://192.168.2.101:8085" + passAva);
+                            }else{
+                                ava.setImageResource(R.drawable.avadefault);
+                            }
+                        } catch (NullPointerException e) {
                             String driverFullName = driver.getFullname();
                             String passAva = loginResponseCall.getUserInfo().getProfileImagePath();
                             username.setText("" + driverFullName);
                             username2.setText("" + driverFullName);
-                            Toast.makeText(GetUserInfo.this, "Vị trí chưa được cập nhật", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(GetUserInfo.this, "Vị trí chưa được cập nhật", Toast.LENGTH_SHORT).show();
                             ava.setImageResource(R.drawable.avadefault);
 
                         }

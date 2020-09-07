@@ -42,7 +42,7 @@ public class TrackingSupply extends AppCompatActivity {
     public static String shipStatus;
 
     public void getShippingInfoActive() {
-        Call<ShippingInfo> shippingInfoCall = ApiClient.getUserService().getShippingInfoAreActive("Bearer " + MainActivity.token);
+        Call<ShippingInfo> shippingInfoCall = ApiClient.getShippingInfoService().getShippingInfoAreActive("Bearer " + MainActivity.token);
         shippingInfoCall.enqueue(new Callback<ShippingInfo>() {
             @Override
             public void onResponse(Call<ShippingInfo> call, Response<ShippingInfo> response) {
@@ -64,7 +64,7 @@ public class TrackingSupply extends AppCompatActivity {
                 //shipStatus
                 changeTracking();
 
-                Call<Inbound> inboundCall = ApiClient.getUserService().getInboundByContainer("Bearer " + MainActivity.token, containerId);
+                Call<Inbound> inboundCall = ApiClient.getShippingInfoService().getInboundByContainer("Bearer " + MainActivity.token, containerId);
                 inboundCall.enqueue(new Callback<Inbound>() {
                     @Override
                     public void onResponse(Call<Inbound> call, Response<Inbound> response) {
@@ -98,7 +98,7 @@ public class TrackingSupply extends AppCompatActivity {
     }
 
     public void changeTracking() {
-        if(!shipStatus.equals("EXCEPTION")) {
+        if (!shipStatus.equals("EXCEPTION")) {
             if (shipStatus.equals("PENDING")) {
                 img1.setImageResource(R.drawable.ic_baseline_done_24);
             }
@@ -141,7 +141,8 @@ public class TrackingSupply extends AppCompatActivity {
 
                 img4.setImageResource(R.drawable.ic_baseline_done_24);
             }
-        }else{
+//
+        } else {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("THÔNG BÁO");
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {

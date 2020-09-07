@@ -31,14 +31,6 @@ public interface UserService {
     @PATCH("geolocation/{id}")
     Call<GeoLocation> editGeolocation(@Header("Authorization") String authHeader, @Path("id") Long id, @Body GeoLocation geoLocation);
 
-    @GET("shipping-info/active")
-    Call<ShippingInfo> getShippingInfoAreActive(@Header("Authorization") String authHeader);
-
-    @GET("inbound/container/{id}")
-    Call<Inbound> getInboundByContainer(@Header("Authorization") String authHeader, @Path("id") Long id);
-
-
-
 
 
 

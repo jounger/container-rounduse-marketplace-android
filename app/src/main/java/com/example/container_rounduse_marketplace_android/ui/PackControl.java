@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,9 +14,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -23,9 +26,13 @@ import androidx.core.content.ContextCompat;
 
 
 import com.example.container_rounduse_marketplace_android.R;
+import com.example.container_rounduse_marketplace_android.controller.ListAdapter;
+import com.example.container_rounduse_marketplace_android.models.Pack;
 import com.example.container_rounduse_marketplace_android.models.ShippingInfo;
 import com.example.container_rounduse_marketplace_android.payload.DefaultResponse;
 import com.example.container_rounduse_marketplace_android.payload.ErrorResponse;
+import com.example.container_rounduse_marketplace_android.payload.PaginationRequest;
+import com.example.container_rounduse_marketplace_android.payload.PaginationResponse;
 import com.example.container_rounduse_marketplace_android.until.ApiClient;
 import com.google.android.gms.common.api.Api;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -48,7 +55,11 @@ public class PackControl extends AppCompatActivity implements ZXingScannerView.R
 
     ImageView btnScan;
     ListView lvPack;
+    TextView textStatus;
+    ArrayList<Pack> arrayShippingInfo = new ArrayList<Pack>();
+    ListAdapter listAdapter;
 
+    PaginationRequest paginationRequest = new PaginationRequest();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,11 +67,13 @@ public class PackControl extends AppCompatActivity implements ZXingScannerView.R
         setContentView(R.layout.activity_pack);
 
         bottomMenuControl();
-        AnhXa();
-        getShippingInfosByDriver();
+//        AnhXa();
+        paginationRequest.setPage(0);
+        paginationRequest.setLimit(20);
+        getShippingInfosByDriver(paginationRequest);
 
         scannerView = new ZXingScannerView(this);
-
+        adapterControl();
 
         btnScan.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,20 +94,49 @@ public class PackControl extends AppCompatActivity implements ZXingScannerView.R
     }
 
 
-    public void getShippingInfosByDriver(){
-        Call<ShippingInfo> shippingInfoCall = ApiClient.getShippingInfoService().getShippingInfosByDriver("Bearer " + MainActivity.token, 1, 20);
-        shippingInfoCall.enqueue(new Callback<ShippingInfo>() {
+    public String packingStation;
+    public String packingTime;
+    public String portOfLoading;
+    public String cutOffTime;
+    public static String status;
+
+    public void getShippingInfosByDriver(PaginationRequest paging) {
+        lvPack = (ListView) findViewById(R.id.listviewPack);
+        btnScan = (ImageView) findViewById(R.id.qrScan);
+        arrayShippingInfo = new ArrayList<>();
+
+
+        Call<PaginationResponse<ShippingInfo>> shippingInfoCall = ApiClient.getShippingInfoService().getShippingInfosByDriver("Bearer " + MainActivity.token, paging.getPage(), paging.getLimit());
+        shippingInfoCall.enqueue(new Callback<PaginationResponse<ShippingInfo>>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
-            public void onResponse(Call<ShippingInfo> call, Response<ShippingInfo> response) {
-                ShippingInfo shippingInfo = response.body();
+            public void onResponse(Call<PaginationResponse<ShippingInfo>> call, Response<PaginationResponse<ShippingInfo>> response) {
+                PaginationResponse<ShippingInfo> shippingInfoPaginationResponse = response.body();
+
+                shippingInfoPaginationResponse.getData().forEach(x -> {
+                    packingStation = x.getOutbound().getPackingStation();
+                    packingTime = x.getOutbound().getPackingTime();
+                    portOfLoading = x.getOutbound().getBooking().getPortOfLoading().getFullname();
+                    cutOffTime = x.getOutbound().getBooking().getCutOffTime();
+                    status = x.getStatus();
+                    listAdapter.notifyDataSetChanged();
+                });
+                arrayShippingInfo.add(new Pack("Nơi đóng hàng xuất: " + packingStation, "Cảng xuất hàng: " + portOfLoading,
+                        "Thời gian đóng hàng: " + packingTime, "Thời gian Cut-off: " + cutOffTime, "" + status, R.drawable.baseline_anchor_black_18));
+
+
             }
 
             @Override
-            public void onFailure(Call<ShippingInfo> call, Throwable t) {
+            public void onFailure(Call<PaginationResponse<ShippingInfo>> call, Throwable t) {
 
             }
         });
+
+
     }
+
+
 
     private boolean checkPermission() {
         return (ContextCompat.checkSelfPermission(PackControl.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED);
@@ -156,7 +198,8 @@ public class PackControl extends AppCompatActivity implements ZXingScannerView.R
     @Override
     public void onDestroy() {
         super.onDestroy();
-//        scannerView.stopCamera();
+        scannerView.stopCamera();
+
     }
 
 
@@ -197,7 +240,7 @@ public class PackControl extends AppCompatActivity implements ZXingScannerView.R
     @Override
     public void handleResult(Result result) {
         Call<DefaultResponse<ShippingInfo>> defaultResponseShippingInfoCall =
-                ApiClient.getShippingInfoService().editShippingInfoByToken("Bearer " + MainActivity.token ,result.getText());
+                ApiClient.getShippingInfoService().editShippingInfoByToken("Bearer " + MainActivity.token, result.getText());
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         defaultResponseShippingInfoCall.enqueue(new Callback<DefaultResponse<ShippingInfo>>() {
             @Override
@@ -217,12 +260,12 @@ public class PackControl extends AppCompatActivity implements ZXingScannerView.R
                     }
                 });
 
-                if(response.isSuccessful()) {
+                if (response.isSuccessful()) {
                     String thongbao = defaultResponse.getMessage();
                     builder.setMessage("" + thongbao);
                     AlertDialog alert1 = builder.create();
                     alert1.show();
-                }else{
+                } else {
                     ErrorResponse message = new Gson().fromJson(response.errorBody().charStream(), ErrorResponse.class);
                     String thongbaofail = message.getMessage();
                     builder.setMessage("" + thongbaofail);
@@ -238,8 +281,15 @@ public class PackControl extends AppCompatActivity implements ZXingScannerView.R
         });
     }
 
-    private void AnhXa() {
-        lvPack = (ListView) findViewById(R.id.listviewPack);
-        btnScan = (ImageView) findViewById(R.id.qrScan);
+
+    public void adapterControl() {
+        listAdapter = new ListAdapter(this, R.layout.listview_pack, arrayShippingInfo);
+        lvPack.setAdapter(listAdapter);
+        lvPack.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int i, long l) {
+                Toast.makeText(PackControl.this, "" + arrayShippingInfo.get(i), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
